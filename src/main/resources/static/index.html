@@ -1,0 +1,127 @@
+<!doctype html>
+
+<html ng-app="app">
+
+<head>
+    <meta charset="utf-8">
+    <!-- CSS only -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <!-- JavaScript Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js"></script>
+    <script src="index.js"></script>
+</head>
+
+<body>
+
+<div class="container" ng-controller="indexController">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item" ng-show="!isUserLoggedIn()">
+                    <form class="align-middle" ng-submit="tryToAuth()">
+                        <div class="input-group input-group-sm" style="padding: 4px;">
+                            <input id="navLoginField" class="form-control" ng-model="user.username" type="text"
+                                   aria-describedby="inputGroup-sizing-sm" style="margin-left: 10px;">
+
+                            <input id="navPasswordField" class="form-control" ng-model="user.password" type="password"
+                                   aria-describedby="inputGroup-sizing-sm" style="margin-left: 10px;">
+
+                            <button id="navLoginSubmit" class="btn btn-outline-warning btn-sm"
+                                    style="margin-left: 10px;" type="submit">Войти
+                            </button>
+                        </div>
+                    </form>
+                </li>
+                <li class="nav-item" ng-show="isUserLoggedIn()" style="padding: 4px;">
+                    <button class="btn btn-outline-secondary btn-sm" ng-click="tryToLogout()">Выйти</button>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <h3>Список продуктов</h3>
+    <table class="table table-hover" cellpadding="0" cellspacing="0"     >
+        <tr>
+            <td>ID</td>
+            <td>Наимнование продукта</td>
+            <td>Стоимость</td>
+            <td>Действие</td>
+        </tr>
+        <tbody>
+        <tr ng-repeat="product in products">
+            <td>{{product.id}}</td>
+            <td>{{product.title}}</td>
+            <td>
+
+                {{product.cost}}
+
+            </td>
+            <td>
+                <button class="btn btn-danger" ng-click="deleteProduct(product.id)">Удалить</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <form ng-submit="loadProducts()">
+        <div>
+            <label for="filterMin" class="form-label">Фильтровать по минимальной цене</label>
+            <input id="filterMin"  class="form-control" type="number" placeholder="min" ng-model="flt.min">
+        </div>
+
+        <div>
+            <label for="filterMax" class="form-label">Фильтровать по максимальной цене</label>
+            <input id="filterMax"  class="form-control" type="number" placeholder="max" ng-model="flt.max">
+        </div>
+
+        <div>
+            <label for="filterPage" class="form-label">Показать страницу</label>
+            <input id="filterPage"  class="form-control" type="number" placeholder="page" ng-model="flt.page">
+        </div>
+
+
+
+        <button><input type="submit" class="btn-danger"></button>
+
+
+    </form>
+
+    <h3>Добавить пользователя</h3>
+
+    <form ng-submit="addUser()">
+        <div>
+            <label for="username" class="form-label">Имя пользователя</label>
+            <input id="username"  class="form-control" required placeholder="username" ng-model="addUser.username">
+        </div>
+
+        <div>
+            <label for="email" class="form-label">Email пользователя</label>
+            <input id="email"  class="form-control" required placeholder="email" ng-model="addUser.email">
+        </div>
+
+        <div>
+            <label for="password" class="form-label">Пароль пользователя</label>
+            <input id="password"  class="form-control" required placeholder="password" ng-model="addUser.password">
+        </div>
+
+        <div>
+            <label for="roles" class="form-label">Роли</label>
+            <select class="form-select" id="roles" multiple required ng-model="addUser.roles.model">
+                <option ng-repeat="role in addUser.roles.roleOptions" value={{role.id}}>{{role.name}}</option>
+            </select>
+
+        </div>
+
+        <button><input type="submit" class="btn btn-dange">Добавить пользователя</button>
+
+
+    </form>
+</div>
+
+</body>
+</html>
